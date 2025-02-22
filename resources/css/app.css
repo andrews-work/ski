@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light mode */
+:root {
+  --primary: #ffffff;
+  --secondary: #000000;
+  --tertiary:rgb(155, 155, 155);
+  --four:rgb(210, 208, 208);
+}
+
+/* Dark mode */
+.dark {
+  --primary: rgb(0, 0, 0);
+  --secondary: #ffffff;
+  --tertiary:rgb(88, 87, 87);
+  --four:rgb(29, 29, 29);
+}
+
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-secondary {
+  background-color: var(--secondary);
+}
+
+.bg-tertiary {
+  background-color: var(--tertiary);
+}
+
+.bg-four {
+    background-color: var(--four);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-secondary {
+  color: var(--secondary);
+}
+
+.text-tertiary {
+  color: var(--tertiary);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-secondary {
+  border-color: var(--secondary);
+}
