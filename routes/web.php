@@ -8,6 +8,7 @@ use App\Http\Controllers\Meetings;
 use App\Http\Controllers\Calendar;
 use App\Http\Controllers\ForumPostController;
 use App\Http\Controllers\ForumCommentController;
+use App\Http\Controllers\ForumCategoryController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -44,6 +45,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/news-feeds', function () {
         return Inertia::render('Auth/NewsFeeds');
     })->name('news-feeds');
+
+    Route::get('/marketplace', function () {
+        return Inertia::render('Auth/Marketplace');
+    })->name('marketplace');
 
     // meetings page
     Route::get('/meetings', [
@@ -87,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/posts/{post}/comments', [ForumCommentController::class, 'store']);
     Route::put('/comments/{comment}', [ForumCommentController::class, 'update']);
     Route::delete('/comments/{comment}', [ForumCommentController::class, 'destroy']);
+    Route::get('/forum-categories', [ForumCategoryController::class, 'index']);
 
 
     Route::get('/timesheets', function () {

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Models\ForumCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Carbon\Carbon;
 
@@ -16,7 +17,7 @@ class ForumPostFactory extends Factory
             'user_id' => User::factory(),
             'title' => $this->faker->sentence(),
             'content' => $this->faker->paragraph(),
-            'category' => $this->faker->randomElement(['General', 'Support', 'Off-Topic']),
+            'category_id' => ForumCategory::factory(),
             'created_at' => $createdAt,
             'updated_at' => $createdAt,
         ];

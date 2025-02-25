@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\ForumComment;
+use App\Models\ForumCategory;
 
 class ForumPost extends Model
 {
@@ -14,7 +15,7 @@ class ForumPost extends Model
         'user_id',
         'title',
         'content',
-        'category',
+        'category_id',
     ];
 
     public function user()
@@ -24,6 +25,11 @@ class ForumPost extends Model
 
     public function comments()
     {
-        return $this->hasMany(ForumComment::class, 'forum_post_id'); // Specify the foreign key
+        return $this->hasMany(ForumComment::class, 'forum_post_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ForumCategory::class);
     }
 }

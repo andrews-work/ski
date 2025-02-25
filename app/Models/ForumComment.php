@@ -11,7 +11,7 @@ class ForumComment extends Model
 
     protected $fillable = [
         'user_id',
-        'forum_post_id', // Use 'forum_post_id' instead of 'post_id'
+        'forum_post_id',
         'content',
     ];
 
@@ -22,6 +22,6 @@ class ForumComment extends Model
 
     public function post()
     {
-        return $this->belongsTo(ForumPost::class, 'forum_post_id'); // Specify the foreign key
+        return $this->belongsTo(ForumPost::class, 'forum_post_id');
     }
 }

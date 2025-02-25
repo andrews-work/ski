@@ -15,7 +15,7 @@ class ForumCommentFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'forum_post_id' => ForumPost::factory(), // Use 'forum_post_id' instead of 'post_id'
+            'forum_post_id' => ForumPost::factory(),
             'content' => $this->faker->paragraph,
         ];
     }

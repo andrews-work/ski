@@ -35,10 +35,6 @@ const showingNavigationDropdown = ref(false);
                                 Dashboard
                             </NavLink>
 
-                            <!-- <NavLink :href="route('news-feeds')" :active="route().current('news-feeds')">
-                                News Feeds
-                            </NavLink> -->
-
                             <NavLink :href="route('meetings.index')" :active="route().current('meetings.index')">
                                 Meetings
                             </NavLink>
@@ -47,17 +43,14 @@ const showingNavigationDropdown = ref(false);
                                 Calendar
                             </NavLink>
 
-                            <!-- <NavLink :href="route('timesheets')" :active="route().current('timesheets')">
-                                Timesheets
+                            <NavLink :href="route('forums')" :active="route().current('forums')">
+                                Forums
                             </NavLink>
 
-                            <NavLink :href="route('accounts')" :active="route().current('accounts')">
-                                Accounts
+                            <NavLink :href="route('marketplace')" :active="route().current('marketplace')">
+                                Marketplace
                             </NavLink>
 
-                            <NavLink :href="route('reports')" :active="route().current('reports')">
-                                Reports
-                            </NavLink> -->
 
                         </div>
                     </div>

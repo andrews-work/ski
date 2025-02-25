@@ -8,6 +8,7 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\MeetingSeeder;
 use Database\Seeders\ForumPostSeeder;
 use Database\Seeders\ForumCommentSeeder;
+use Database\Seeders\ForumCategorySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this -> call(UserSeeder::class);
         $this -> call(MeetingSeeder::class);
+        $this -> call(ForumCategorySeeder::class);
         $this -> call(ForumPostSeeder::class);
         $this -> call(ForumCommentSeeder::class);
     }

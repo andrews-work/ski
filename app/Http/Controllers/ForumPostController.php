@@ -14,47 +14,70 @@ class ForumPostController extends Controller
 {
     // List all
     public function index(Request $request)
-    {
-        $query = ForumPost::with('user');
+{
+    // Log incoming request parameters
+    Log::info('Fetching forum posts', [
+        'request_params' => $request->all(),
+    ]);
 
-        // Default sorting by date (descending)
-        $sortDirection = $request->sort_direction === 'asc' ? 'asc' : 'desc';
+    $query = ForumPost::with('user');
 
-        if ($request->filled('sort_by')) {
-            switch ($request->sort_by) {
-                case 'author':
-                    // Sort by author name, then by date
-                    $query->join('users', 'users.id', '=', 'forum_posts.user_id')
-                        ->orderBy('users.name')
-                        ->orderBy('forum_posts.created_at', $sortDirection);
-                    break;
-                case 'category':
-                    // Sort by category, then by date
-                    $query->orderBy('category')
-                        ->orderBy('created_at', $sortDirection);
-                    break;
-                case 'date':
-                default:
-                    // Sort by date
-                    $query->orderBy('created_at', $sortDirection);
-                    break;
-            }
-        } else {
-            // Default sorting by date (descending)
-            $query->orderBy('created_at', 'desc');
+    // Default sorting by date (descending)
+    $sortDirection = $request->sort_direction === 'asc' ? 'asc' : 'desc';
+
+    // Log the sort direction and the selected sorting criteria
+    Log::info('Sorting posts', [
+        'sort_by' => $request->sort_by ?? 'date',
+        'sort_direction' => $sortDirection,
+    ]);
+
+    if ($request->filled('sort_by')) {
+        switch ($request->sort_by) {
+            case 'author':
+                // Sort by author name, then by date
+                $query->join('users', 'users.id', '=', 'forum_posts.user_id')
+                    ->orderBy('users.name')
+                    ->orderBy('forum_posts.created_at', $sortDirection);
+                break;
+            case 'category':
+                // Sort by category, then by date
+                $query->orderBy('category')
+                    ->orderBy('created_at', $sortDirection);
+                break;
+            case 'date':
+            default:
+                // Sort by date
+                $query->orderBy('created_at', $sortDirection);
+                break;
         }
-
-        // Paginate the results
-        $posts = $query->paginate(5);
-
-        return Inertia::render('Auth/Forums', [
-            'posts' => $posts,
-            'currentUser' => Auth::user(),
-            'filters' => $request->only(['sort_by', 'sort_direction']), // Pass filters to Vue
-        ]);
+    } else {
+        // Default sorting by date (descending)
+        $query->orderBy('created_at', 'desc');
     }
 
-    // Show single
+    // Log the SQL query being executed (optional, for debugging)
+    Log::info('SQL Query', [
+        'sql' => $query->toSql(),
+        'bindings' => $query->getBindings(),
+    ]);
+
+    // Paginate the results
+    $posts = $query->paginate(5);
+
+    // Log the number of posts retrieved
+    Log::info('Posts fetched', [
+        'total_posts' => $posts->total(),
+        'current_page' => $posts->currentPage(),
+        'per_page' => $posts->perPage(),
+    ]);
+
+    return Inertia::render('Auth/Forums', [
+        'posts' => $posts,
+        'currentUser' => Auth::user(),
+        'filters' => $request->only(['sort_by', 'sort_direction']),
+    ]);
+}
+
     // Show single
 public function show(ForumPost $post)
 {
@@ -76,8 +99,8 @@ public function show(ForumPost $post)
     ]);
 
     return Inertia::render('Auth/Forums', [
-        'posts' => [], // Empty posts array since we're viewing a single post
-        'post' => $post, // Pass the single post with comments
+        'posts' => [],
+        'post' => $post,
         'currentUser' => Auth::user(),
     ]);
 }
@@ -104,7 +127,6 @@ public function show(ForumPost $post)
     // Update
     public function update(Request $request, ForumPost $post)
     {
-        // Gate check to verify if the user has permission to update the post
         if (Gate::denies('update', $post)) {
             abort(403, 'You are not authorized to edit this post.');
         }
