@@ -1,34 +1,33 @@
 <script setup>
-// Hardcoded data for technique subcategories
-const techniqueSubcategories = [
-  { id: 61, name: 'Groomers' },
-  { id: 62, name: 'Park' },
-  { id: 63, name: "Tree's" },
-  { id: 64, name: "Powder" },
-  { id: 65, name: "Cliff's" },
-  { id: 66, name: "Backcountry" },
-  { id: 67, name: "Crosscountry" },
-];
+const props = defineProps({
+  category: Object,
+});
 
+const emit = defineEmits(['view-category']);
+
+// Function to handle the "View" button click
 const goToCategory = (categoryId) => {
+  emit('view-category', categoryId); // Emit the category ID to the parent
   console.log(`Navigate to category with ID: ${categoryId}`);
 };
 </script>
 
 <template>
-  <div class="p-4 border border-gray-300 rounded-lg shadow-md">
-    <div class="flex items-center justify-between">
-      <h4 class="text-2xl font-bold text-white">Technique</h4>
-      <p class="mt-2 text-white">Improve your skiing or snowboarding technique.</p>
-      <button
-        @click="goToCategory(61)"
-        class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-        View
-      </button>
-    </div>
+    <div class="p-4 border border-gray-300 rounded-lg shadow-md">
+      <!-- Render category name and description dynamically -->
+      <div class="flex items-center justify-between">
+        <h4 class="text-2xl font-bold text-white">{{ props.category.name }}</h4>
+        <p class="mt-2 text-white">{{ props.category.description }}</p>
+        <button
+          @click="goToCategory(props.category.id)"
+          class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+          View
+        </button>
+      </div>
 
-    <div v-for="subcategory in techniqueSubcategories" :key="subcategory.id" class="mt-6">
-      <h6 class="text-lg font-bold text-gray-300">{{ subcategory.name }}</h6>
+      <!-- Loop through subcategories dynamically -->
+      <div v-for="subcategory in props.category.children" :key="subcategory.id" class="mt-6">
+        <h6 class="text-lg font-bold text-gray-300">{{ subcategory.name }}</h6>
+      </div>
     </div>
-  </div>
-</template>
+  </template>

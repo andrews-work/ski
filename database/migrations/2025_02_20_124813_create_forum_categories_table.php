@@ -11,7 +11,9 @@ class CreateForumCategoriesTable extends Migration
         Schema::create('forum_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description');
+            $table->text('description')->nullable();
+            $table->unsignedBigInteger('parent_id')->nullable();
+            $table->foreign('parent_id')->references('id')->on('forum_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

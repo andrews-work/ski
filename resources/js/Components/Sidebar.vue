@@ -31,7 +31,7 @@ onMounted(() => {
 
                 <!-- Forums Section with Buttons instead of Links -->
                 <template v-if="currentUrl.includes('forums')">
-                    <button class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
+                    <button v-if="currentUrl.includes('forums/categories/resorts')" class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
                         Resorts
                     </button>
                     <button class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
@@ -48,6 +48,12 @@ onMounted(() => {
                     </button>
                     <button class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
                         Technique
+                    </button>
+                    <button class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
+                        My Comments
+                    </button>
+                    <button class="px-4 py-2 text-white rounded-md focus:outline-none hover:bg-gray-700">
+                        My posts
                     </button>
                 </template>
 

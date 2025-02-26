@@ -51,6 +51,10 @@ const showingNavigationDropdown = ref(false);
                                 Marketplace
                             </NavLink>
 
+                            <NavLink :href="route('resorts')" :active="route().current('resorts')">
+                                Resorts
+                            </NavLink>
+
 
                         </div>
                     </div>

@@ -1,25 +1,13 @@
 <script setup>
-// Accepting the category prop passed from the parent
 const props = defineProps({
-  category: Object //
+  category: Object,
 });
 
-// Log the category name to verify its value
-console.log('Category Name:', props.category.name);
+const emit = defineEmits(['view-category']);
 
-// Hardcoded data for gear subcategories
-const subcategories = [
-  { id: 21, name: 'Skis' },
-  { id: 22, name: 'Snowboards' },
-  { id: 23, name: 'Boots' },
-  { id: 24, name: 'Bindings' },
-  { id: 25, name: 'Brands' },
-  { id: 26, name: 'Poles' },
-  { id: 27, name: 'Gloves' },
-  { id: 28, name: 'Goggles' },
-];
-
+// Function to handle the "View" button click
 const goToCategory = (categoryId) => {
+  emit('view-category', categoryId); // Emit the category ID to the parent
   console.log(`Navigate to category with ID: ${categoryId}`);
 };
 </script>
@@ -37,8 +25,8 @@ const goToCategory = (categoryId) => {
       </button>
     </div>
 
-    <!-- Loop through the hardcoded gear subcategories -->
-    <div v-for="subcategory in subcategories" :key="subcategory.id" class="mt-6">
+    <!-- Loop through subcategories dynamically -->
+    <div v-for="subcategory in props.category.children" :key="subcategory.id" class="mt-6">
       <h6 class="text-lg font-bold text-gray-300">{{ subcategory.name }}</h6>
     </div>
   </div>

@@ -22,9 +22,9 @@ class LogRoutes
             'method' => $request->method(),
             'route' => $request->route()->getName(),
             'ip' => $request->ip(),
-            'user_agent' => $request->header('User-Agent'),
+            // 'user_agent' => $request->header('User-Agent'),
         ]);
-        
+
         return $next($request);
     }
 }

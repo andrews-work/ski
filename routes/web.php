@@ -50,6 +50,10 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Auth/Marketplace');
     })->name('marketplace');
 
+    Route::get('/resorts', function () {
+        return Inertia::render('Auth/Resorts');
+    })->name('resorts');
+
     // meetings page
     Route::get('/meetings', [
         Meetings::class, 'index'
@@ -93,6 +97,9 @@ Route::middleware('auth')->group(function () {
     Route::put('/comments/{comment}', [ForumCommentController::class, 'update']);
     Route::delete('/comments/{comment}', [ForumCommentController::class, 'destroy']);
     Route::get('/forum-categories', [ForumCategoryController::class, 'index']);
+    Route::get('/forums/categories/{category}', [ForumCategoryController::class, 'show'])->name('forum-categories.show');
+
+
 
 
     Route::get('/timesheets', function () {

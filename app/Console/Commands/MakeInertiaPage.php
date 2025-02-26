@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\File;
 
 class MakeInertiaPage extends Command
 {
-    protected $signature = 'make:page {name}';
+    protected $signature = 'make:pages {name}';
     protected $description = 'Create a new Inertia.js page component';
 
     public function handle()
