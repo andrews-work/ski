@@ -65,7 +65,6 @@ const handlePostClick = (post) => {
 };
 
 const handleCategoryClick = (categoryId) => {
-  // Find the category by ID
   const category = categories.value.find(cat => cat.id === categoryId);
   if (category) {
     selectedCategory.value = category;

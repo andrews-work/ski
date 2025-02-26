@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
             // monthly
             Route::get('/calendar/monthly', [Calendar::class, 'monthly'])->name('calendar.monthly');
 
-    // basic forum page
+    // forums
     Route::get('/forums', [ForumPostController::class, 'index'])->name('forums');
     Route::post('/forums', [ForumPostController::class, 'store'])->name('forums.store');
     Route::get('/forums/{post}', [ForumPostController::class, 'show'])->name('forums.show');

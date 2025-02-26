@@ -1,8 +1,6 @@
 <template>
     <div class="forum-header">
-        <!-- Adjusting the layout with responsive classes -->
         <div class="flex flex-col gap-4 p-4 bg-gray-800 rounded-lg md:grid md:grid-cols-2 lg:grid-cols-1 justify-evenly">
-            <!-- Search Bar -->
             <input
                 type="text"
                 v-model="searchQuery"
@@ -10,9 +8,7 @@
                 class="px-4 py-2 text-sm text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:border-blue-500"
             />
 
-            <!-- Sort Options -->
             <div class="flex gap-4">
-                <!-- Sort by Date -->
                 <button
                     @click="setSortBy('date')"
                     :class="{
@@ -24,7 +20,6 @@
                     Sort by Date {{ sortDirection === 'asc' ? '↑' : '↓' }}
                 </button>
 
-                <!-- Sort by Author -->
                 <button
                     @click="setSortBy('author')"
                     :class="{
@@ -36,7 +31,6 @@
                     Sort by Author
                 </button>
 
-                <!-- Sort by Category -->
                 <button
                     @click="setSortBy('category')"
                     :class="{
@@ -49,7 +43,6 @@
                 </button>
             </div>
 
-            <!-- My Posts Button -->
             <button
                 @click="toggleMyPosts"
                 :class="{
@@ -61,7 +54,6 @@
                 My Posts
             </button>
 
-            <!-- Create New Post Button -->
             <Link href="/forums/create" class="px-4 py-2 text-sm text-center text-white transition-colors bg-green-800 rounded-lg hover:bg-green-600">
                 Create New Post
             </Link>
@@ -69,16 +61,14 @@
     </div>
 </template>
 
-
 <script setup>
 import { ref, watch, defineEmits, defineProps } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-// Define props
 const props = defineProps({
     sortDirection: {
         type: String,
-        default: 'desc', // Default to descending
+        default: 'desc',
     },
 });
 
@@ -88,7 +78,6 @@ const searchQuery = ref('');
 const sortBy = ref('date');
 const showMyPosts = ref(false);
 
-// Set the sorting criteria
 const setSortBy = (criteria) => {
     if (criteria === 'date') {
         emit('update:sortBy', criteria);

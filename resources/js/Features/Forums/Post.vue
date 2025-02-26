@@ -77,7 +77,6 @@
         </button>
       </div>
 
-      <!-- Use the PostComment component -->
       <PostComment
         :comments="comments"
         :currentUser="currentUser"
@@ -133,7 +132,6 @@
     }
   };
 
-  // Function to get the full category path
   const getCategoryPath = (categoryId) => {
     const findCategory = (categories, categoryId) => {
       for (const category of categories) {
@@ -151,7 +149,6 @@
     const category = findCategory(props.categories, categoryId);
     if (!category) return 'Uncategorized';
 
-    // Build the category path
     const path = [];
     let currentCategory = category;
 
@@ -163,7 +160,6 @@
     return path.join(' > ');
   };
 
-  // Handle comment events
   const handleCommentAdded = (newComment) => {
     comments.value.push(newComment);
   };

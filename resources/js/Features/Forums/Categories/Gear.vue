@@ -5,16 +5,15 @@ const props = defineProps({
 
 const emit = defineEmits(['view-category']);
 
-// Function to handle the "View" button click
 const goToCategory = (categoryId) => {
-  emit('view-category', categoryId); // Emit the category ID to the parent
+  emit('view-category', categoryId);
   console.log(`Navigate to category with ID: ${categoryId}`);
 };
 </script>
 
 <template>
   <div class="p-4 border border-gray-300 rounded-lg shadow-md">
-    <!-- Render category name and description dynamically -->
+
     <div class="flex items-center justify-between">
       <h4 class="text-2xl font-bold text-white">{{ props.category.name }}</h4>
       <p class="mt-2 text-white">{{ props.category.description }}</p>
@@ -25,7 +24,6 @@ const goToCategory = (categoryId) => {
       </button>
     </div>
 
-    <!-- Loop through subcategories dynamically -->
     <div v-for="subcategory in props.category.children" :key="subcategory.id" class="mt-6">
       <h6 class="text-lg font-bold text-gray-300">{{ subcategory.name }}</h6>
     </div>
