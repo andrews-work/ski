@@ -40,11 +40,14 @@ const fetchCategories = () => {
         })
         .then((data) => {
             categories.value = data.categories;
+            // console.log('Fetched categories:', JSON.stringify(categories.value, null, 2));
         })
         .catch((error) => {
             console.error('Error fetching categories:', error);
         });
 };
+
+
 
 onMounted(() => {
     if (!posts.value) {
@@ -82,7 +85,7 @@ const handleCategoryClick = (categoryId) => {
 
     <div class="py-12">
       <div class="w-full mx-auto sm:px-6 lg:px-8">
-        <d class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
+        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
           <div class="p-6 text-gray-900 dark:text-gray-100">
             <div class="flex">
 
@@ -116,8 +119,7 @@ const handleCategoryClick = (categoryId) => {
 
             </div>
           </div>
-        </d
-iv>
+        </div>
       </div>
     </div>
   </AuthenticatedLayout>

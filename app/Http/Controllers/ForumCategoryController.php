@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ForumCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ForumCategoryController extends Controller
 {
@@ -13,7 +14,10 @@ class ForumCategoryController extends Controller
             ->whereNull('parent_id')
             ->get();
 
+        Log::info('Fetched categories:', $categories->toArray());
+        
         return response()->json(['categories' => $categories]);
+
     }
 
     public function show($id)

@@ -15,6 +15,9 @@ const props = defineProps({
 
 const emit = defineEmits(['view-category']);
 
+// Log categories when received
+// console.log('categories - Received categories:', props.categories);
+
 const componentMap = {
   Resorts: ResortsCategory,
   Gear: GearCategory,
@@ -24,13 +27,15 @@ const componentMap = {
 };
 
 const handleViewCategory = (categoryId) => {
-  emit('view-category', categoryId); // Propagate the event to the parent
+  console.log('View category triggered with ID:', categoryId);
+  emit('view-category', categoryId);
 };
 </script>
 
 <template>
   <div class="mx-auto space-y-6 max-w-7xl">
     <div v-for="category in categories" :key="category.id">
+      <!-- Log each category as it gets rendered -->
       <component
         :is="componentMap[category.name]"
         :category="category"
