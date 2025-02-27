@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, router } from '@inertiajs/vue3';
-import { ref, onMounted } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import ForumList from '@/Features/Forums/List.vue';
 import Post from '@/Features/Forums/Post.vue';
 import ForumCategoriesList from '@/Features/Forums/Categories.vue';
@@ -9,67 +9,54 @@ import ForumCategoriesPage from '@/Features/Forums/CategoryPage.vue';
 import ForumHeader from '@/Features/Forums/Header.vue';
 
 const props = defineProps({
-    posts: Object,
-    currentUser: Object,
-    filters: Object,
-    post: Object,
-    categories: Object,
+  posts: Object,
+  currentUser: Object,
+  filters: Object,
+  post: Object,
+  categories: Object,
+  category: Object,
 });
 
+const selectedCategory = ref(props.category);
 const posts = ref(props.posts);
 const categories = ref(props.categories || []);
-const selectedCategory = ref(null);
 const selectedPost = ref(props.post);
 
+watch(
+  () => props.category,
+  (newCategory) => {
+    selectedCategory.value = newCategory;
+  },
+  { immediate: true }
+);
+
 const fetchPosts = (page) => {
-    router.get('/forums', { page }, {
-        preserveState: true,
-        onSuccess: (data) => {
-            posts.value = data.props.posts;
-        }
-    });
+  router.get('/forums', { page }, {
+    preserveState: true,
+    onSuccess: (data) => {
+      posts.value = data.props.posts;
+    }
+  });
 };
-
-const fetchCategories = () => {
-    fetch('/forum-categories')
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch categories');
-            }
-            return response.json();
-        })
-        .then((data) => {
-            categories.value = data.categories;
-            // console.log('Fetched categories:', JSON.stringify(categories.value, null, 2));
-        })
-        .catch((error) => {
-            console.error('Error fetching categories:', error);
-        });
-};
-
-
 
 onMounted(() => {
-    if (!posts.value) {
-        fetchPosts(1);
-    }
-
-    if (!categories.value.length) {
-        fetchCategories();
-    }
+  if (!posts.value) {
+    fetchPosts(1);
+  }
 });
 
 const handlePostClick = (post) => {
-    selectedPost.value = post;
-    selectedCategory.value = null;
+  selectedPost.value = post;
+  selectedCategory.value = null;
 };
 
 const handleCategoryClick = (categoryId) => {
-  const category = categories.value.find(cat => cat.id === categoryId);
-  if (category) {
-    selectedCategory.value = category;
-    selectedPost.value = null;
-  }
+  router.get(`/forums/categories/${categoryId}`, {}, {
+    preserveState: true,
+    onSuccess: (data) => {
+      selectedCategory.value = data.props.category;
+    }
+  });
 };
 </script>
 
@@ -87,7 +74,6 @@ const handleCategoryClick = (categoryId) => {
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
           <div class="p-6 text-gray-900 dark:text-gray-100">
             <div class="flex">
-
               <div v-if="!selectedPost && !selectedCategory" class="w-2/3 mr-4 overflow-y-scroll">
                 <ForumCategoriesList
                   :categories="categories"
@@ -112,10 +98,8 @@ const handleCategoryClick = (categoryId) => {
 
                   <Post v-if="selectedPost" :post="selectedPost" :categories="categories" />
                   <ForumCategoriesPage v-if="selectedCategory" :category="selectedCategory" />
-
                 </div>
               </div>
-
             </div>
           </div>
         </div>

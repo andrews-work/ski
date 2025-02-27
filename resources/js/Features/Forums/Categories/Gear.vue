@@ -7,13 +7,11 @@ const emit = defineEmits(['view-category']);
 
 const goToCategory = (categoryId) => {
   emit('view-category', categoryId);
-  console.log(`Navigate to category with ID: ${categoryId}`);
 };
 </script>
 
 <template>
   <div class="p-4 border border-gray-300 rounded-lg shadow-md">
-
     <div class="flex items-center justify-between">
       <h4 class="text-2xl font-bold text-white">{{ props.category.name }}</h4>
       <p class="mt-2 text-white">{{ props.category.description }}</p>

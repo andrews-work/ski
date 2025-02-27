@@ -4,25 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\ForumCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class ForumCategoryController extends Controller
 {
-    public function index()
-    {
-        $categories = ForumCategory::with('children.children.children')
-            ->whereNull('parent_id')
-            ->get();
-
-        Log::info('Fetched categories:', $categories->toArray());
-        
-        return response()->json(['categories' => $categories]);
-
-    }
-
+    // Show a specific category and its children
     public function show($id)
     {
-        $category = ForumCategory::with('children.children.children')->findOrFail($id);
-        return response()->json(['category' => $category]);
+        $category = ForumCategory::with('children')->findOrFail($id);
+
+        // Return the category data to the Inertia page
+        return Inertia::render('Auth/Forums', [
+            'category' => $category,
+            'posts' => (object) [], // Pass an empty object for posts
+
+        ]);
     }
 }
