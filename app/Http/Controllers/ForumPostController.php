@@ -5,19 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\ForumPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
 use Illuminate\Support\Facades\Log;
+use App\Events\PostCreated;
 
 class ForumPostController extends Controller
 {
-    // Show single post
     public function show(ForumPost $post)
     {
-        // Load the post with its user and comments
         $post->load('user', 'comments.user');
 
-        // Log the post and its comments
         Log::info('Viewing post with comments', [
             'post_id' => $post->id,
             'post_title' => $post->title,
@@ -38,58 +36,63 @@ class ForumPostController extends Controller
         ]);
     }
 
-    // Create a new post
     public function store(Request $request)
     {
-        $request->validate([
+        Log::info('Creating a new post', $request->all());
+
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
-            'category' => 'required|string',
+            'category_id' => 'required|exists:forum_categories,id',
         ]);
 
         $post = ForumPost::create([
             'user_id' => Auth::user()->id,
-            'title' => $request->title,
-            'content' => $request->content,
-            'category' => $request->category,
+            'title' => $validatedData['title'],
+            'content' => $validatedData['content'],
+            'category_id' => $validatedData['category_id'],
         ]);
 
-        return response()->json($post, 201);
+        // Dispatch the PostCreated event
+        event(new PostCreated($post));
+
+        return redirect()->route('forums');
     }
 
-    // Update an existing post
     public function update(Request $request, ForumPost $post)
     {
         if (Gate::denies('update', $post)) {
             abort(403, 'You are not authorized to edit this post.');
         }
 
-        // Validate the incoming data
         $request->validate([
             'title' => 'sometimes|string|max:255',
             'content' => 'sometimes|string',
             'category' => 'sometimes|string',
         ]);
 
-        // Update the post with the new values
         $post->update($request->only(['title', 'content', 'category']));
 
-        // Redirect back to the post's page after saving
         return redirect()->route('forums.show', $post);
     }
 
-    // Delete a post
     public function destroy(ForumPost $post)
-    {
-        // Manually check authorization using the Gate facade
-        if (!Gate::allows('delete', $post)) {
-            abort(403, 'You are not authorized to delete this post.');
-        }
+{
+    Log::info('Attempting to delete post', ['post_id' => $post->id]);
 
-        // If authorized, delete the post
-        $post->delete();
-
-        // Redirect back to the forums list page
-        return redirect()->route('forums');
+    if (!Gate::allows('delete', $post)) {
+        Log::warning('Unauthorized deletion attempt', ['user_id' => Auth::id(), 'post_id' => $post->id]);
+        abort(403, 'You are not authorized to delete this post.');
     }
+
+    Log::info('Deleting post', ['post_id' => $post->id]);
+    $post->delete();
+
+    Log::info('Post deleted successfully', ['post_id' => $post->id]);
+
+    return redirect()->route('forums');
+
+    Log::info('redirect');
+}
+
 }

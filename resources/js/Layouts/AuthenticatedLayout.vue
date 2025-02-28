@@ -6,7 +6,6 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import { Link } from '@inertiajs/vue3';
-import Sidebar from '@/Components/Sidebar.vue'
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -203,12 +202,7 @@ const showingNavigationDropdown = ref(false);
 
         <!-- Page Content -->
         <main class="flex">
-            <div class="w-[10vw]">
-                <Sidebar />
-            </div>
-            <div class="w-[90vw]">
-                <slot />
-            </div>
+            <slot />
         </main>
 
     </div>

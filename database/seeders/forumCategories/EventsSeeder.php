@@ -20,7 +20,17 @@ class EventsSeeder extends Seeder
         ]);
 
         ForumCategory::create([
-            'name' => 'Racing',
+            'name' => 'Alpine',
+            'parent_id' => $events->id,
+        ]);
+
+        ForumCategory::create([
+            'name' => 'Park',
+            'parent_id' => $events->id,
+        ]);
+
+        ForumCategory::create([
+            'name' => 'X-country',
             'parent_id' => $events->id,
         ]);
 

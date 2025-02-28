@@ -2,18 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ForumPost;
 use App\Models\ForumCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
+use App\Models\ForumPost;
 use Illuminate\Support\Facades\Log;
 
 class ForumsController extends Controller
 {
-    // List all posts and categories
     public function index(Request $request)
     {
+        // Check if a new post has been created
+        Log::info('Fetching latest post from cache.');
+
+        $latestPost = Cache::get('latest_post');
+
+        // Log if there's a post or if it's null
+        if ($latestPost) {
+            Log::info('Latest post found in cache: ', ['latestPost' => $latestPost->title]);
+        } else {
+            Log::info('No latest post found in cache.');
+        }
+
         // Fetch posts
         $query = ForumPost::with('user');
         $sortDirection = $request->sort_direction === 'asc' ? 'asc' : 'desc';
@@ -50,18 +62,7 @@ class ForumsController extends Controller
             'categories' => $categories,
             'currentUser' => Auth::user(),
             'filters' => $request->only(['sort_by', 'sort_direction']),
+            'latestPost' => $latestPost,
         ]);
     }
-
-    // Show single post
-    // public function show(ForumPost $post)
-    // {
-    //     $post->load('user', 'comments.user');
-
-    //     return Inertia::render('Auth/Forums', [
-    //         'posts' => [],
-    //         'post' => $post,
-    //         'currentUser' => Auth::user(),
-    //     ]);
-    // }
 }

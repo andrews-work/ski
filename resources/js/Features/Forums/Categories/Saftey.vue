@@ -6,7 +6,7 @@ const props = defineProps({
 const emit = defineEmits(['view-category']);
 
 const goToCategory = (categoryId) => {
-  emit('view-category', categoryId); 
+  emit('view-category', categoryId);
   console.log(`Navigate to category with ID: ${categoryId}`);
 };
 </script>

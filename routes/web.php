@@ -89,19 +89,22 @@ Route::middleware('auth')->group(function () {
             Route::get('/calendar/monthly', [Calendar::class, 'monthly'])->name('calendar.monthly');
 
     // forums
-Route::get('/forums', [ForumsController::class, 'index'])->name('forums');
-Route::post('/forums', [ForumPostController::class, 'store'])->name('forums.store');
-Route::get('/forums/{post}', [ForumPostController::class, 'show'])->name('forums.show');
-Route::put('/forums/{post}', [ForumPostController::class, 'update'])->name('forums.update');
-Route::delete('/forums/{post}', [ForumPostController::class, 'destroy'])->name('forums.destroy');
-Route::post('/posts/{post}/comments', [ForumCommentController::class, 'store']);
-Route::put('/comments/{comment}', [ForumCommentController::class, 'update']);
-Route::delete('/comments/{comment}', [ForumCommentController::class, 'destroy']);
-Route::get('/forum-categories', [ForumCategoryController::class, 'index']);
-Route::get('/forums/categories/{category}', [ForumCategoryController::class, 'show'])->name('forum-categories.show');
+    Route::get('/forums', [ForumsController::class, 'index'])->name('forums');
 
+    Route::post('/forums', [ForumPostController::class, 'store'])->name('forums.store');
+    Route::get('/forums/{post}', [ForumPostController::class, 'show'])->name('forums.show');
+    Route::put('/forums/{post}', [ForumPostController::class, 'update'])->name('forums.update');
+    Route::delete('/forums/{post}', [ForumPostController::class, 'destroy'])->name('forums.destroy');
 
+    Route::post('/posts/{post}/comments', [ForumCommentController::class, 'store']);
+    Route::put('/comments/{comment}', [ForumCommentController::class, 'update']);
+    Route::delete('/comments/{comment}', [ForumCommentController::class, 'destroy']);
 
+    Route::get('/forum-categories', [ForumCategoryController::class, 'index']);
+    Route::get('/forums/categories/{name}', [ForumCategoryController::class, 'show'])->name('forum-categories.show');
+    Route::get('/forums/categories/{name}/{continent}', [ForumCategoryController::class, 'continent'])->name('forum-categories.continent');
+    // Route::get('/forums/categories/{name}/{continent}/{country}', [ForumCategoryController::class, 'countries'])->name('forum-categories.countries');
+    // Route::get('/forums/categories/{name}/{continent}/{country}/{resort}', [ForumCategoryController::class, 'resort'])->name('forum-categories.resort');
 
     Route::get('/timesheets', function () {
         return Inertia::render('Auth/Timesheets');
